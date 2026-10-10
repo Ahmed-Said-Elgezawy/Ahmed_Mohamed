@@ -17,9 +17,11 @@ export interface SocialLink {
  
 const DEFAULT_PAGES: FooterLink[] = [
   { label: 'Home', path: '/' },
-  { label: 'About', path: '/about' },
-  { label: 'Services', path: '/services' },
-  { label: 'Experience', path: '/experience' },
+  { label: 'About', path: '/About' },
+  { label: 'Services', path: '/Services' },
+  { label: 'Experience', path: '/Experience' },
+  { label: 'Skills', path: '/Skills' },
+  { label: 'Projects', path: '/Projects' },
 ];
  
 const DEFAULT_SERVICES: FooterLink[] = [

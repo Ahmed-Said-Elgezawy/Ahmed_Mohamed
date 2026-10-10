@@ -266,7 +266,22 @@
 
         <div class="card result-card">
           <h3 class="sub-title">Result</h3>
-          <p class="result-label">{{ togetherResult }}</p>
+
+          <div class="card card-skills strength">
+          @for (tile of strength; track tile.label; let last = $last) {
+            <div class="strength-tile">
+              <span class="group-icon">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                  <path [attr.d]="tile.icon" />
+                </svg>
+              </span>
+              <span class="strength-label">{{ tile.label }}</span>
+            </div>
+            @if (!last) {
+              <span class="plus" aria-hidden="true">+</span>
+            }
+          }
+        </div>
         </div>
       </section>
 

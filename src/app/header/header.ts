@@ -27,6 +27,7 @@ const DEFAULT_LINKS: NavLink[] = [
   { label: 'Services', path: '/Services' },
   { label: 'Experience', path: '/Experience' },
   { label: 'Skills', path: '/Skills' },
+  { label: 'Projects', path: '/Projects' },
 ];
  
 const FULL_NAME = 'Ahmed Elgizawy';

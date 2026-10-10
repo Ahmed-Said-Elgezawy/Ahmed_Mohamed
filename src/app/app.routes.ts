@@ -7,6 +7,9 @@ import { Experience } from './experience/experience';
 import { Header } from './header/header';
 import { Footer } from './footer/footer';
 import { Contact } from './contact/contact';
+import { Projects } from './projects/projects';
+import { FrontEnd } from './front-end/front-end';
+import { GraphicDesign as Graphic } from './graphic/graphic';
 
 export const routes: Routes = [
     {
@@ -45,5 +48,17 @@ export const routes: Routes = [
     {
        path: 'Contact',
        component:Contact 
+    },
+    {
+       path: 'Projects',
+       component:Projects 
+    },
+    {
+       path: 'Projects/Front-End',
+       component:FrontEnd 
+    },
+    {
+       path: 'Projects/Graphic-Design',
+       component: Graphic 
     },
 ];

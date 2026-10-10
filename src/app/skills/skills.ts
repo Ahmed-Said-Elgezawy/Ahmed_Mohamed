@@ -70,6 +70,11 @@ interface ResultGroup {
   title: string;
   items: string[];
 }
+
+interface StrengthTile {
+  label: string;
+  icon: string;
+}
  
 /* ------------------------------------------------------------------ */
 /*  Icons (Lucide-style paths, drawn with stroke, 24x24)               */
@@ -420,6 +425,13 @@ const SECTIONS: SectionLink[] = [
   { id: 'journey', label: 'Development journey' },
   { id: 'contact', label: 'Skills into results' },
 ];
+
+const STRENGTH: StrengthTile[] = [
+  { label: 'Business', icon: ICONS.briefcase },
+  { label: 'Marketing', icon: ICONS.megaphone },
+  { label: 'Design', icon: ICONS.pen },
+  { label: 'Technology', icon: ICONS.code },
+];
  
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                            */
@@ -469,6 +481,7 @@ private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   /* ---- outputs (used when no link is provided) ---- */
   readonly talk = output<void>();
   readonly viewProjects = output<void>();
+  readonly strength = STRENGTH;
  
   /* ---- static content ---- */
   readonly headline = HEADLINE;

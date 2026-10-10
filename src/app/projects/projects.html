@@ -1,0 +1,230 @@
+<a class="skip-link" href="#categories" (click)="$event.preventDefault(); searchInput.focus()">
+  Skip to search
+</a>
+
+<div class="progress" aria-hidden="true">
+  <span [style.width.%]="progress()"></span>
+</div>
+
+<div class="page">
+  <header class="topbar inner">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <span>Profile</span>
+      <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+        <path d="m9 18 6-6-6-6" />
+      </svg>
+      <span class="current" aria-current="page">Projects</span>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ============ Hero ============ -->
+    <section class="hero-band" aria-labelledby="hero-title">
+      <div class="inner hero">
+        <span class="badge badge-solid">Projects</span>
+        <h1 id="hero-title">Projects</h1>
+        <p class="hero-lead">
+          A collection of work across development, design, and marketing. Choose a category to
+          explore the projects inside it.
+        </p>
+
+        <ul class="stats" aria-label="At a glance">
+          @for (stat of stats; track stat.label) {
+            <li class="stat">
+              <span class="stat-label">{{ stat.label }}</span>
+              <span class="stat-value">{{ stat.value }}</span>
+              <span class="stat-note">{{ stat.note }}</span>
+            </li>
+          }
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ Categories ============ -->
+    <section id="categories" class="inner block" aria-labelledby="categories-title">
+      <div class="block-head">
+        <h2 id="categories-title">Project categories</h2>
+        <p class="muted">Search, filter, and sort the categories to find what you are looking for.</p>
+      </div>
+
+      <div class="toolbar" role="search">
+        <div class="search">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+            <path d="m21 21-4.3-4.3 M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z" />
+          </svg>
+          <input
+            #searchInput
+            type="search"
+            placeholder="Search categories, skills, or tools, e.g. Angular, brand, campaigns"
+            aria-label="Search project categories"
+            autocomplete="off"
+            (input)="onSearch($event)"
+          />
+          @if (query()) {
+            <button
+              type="button"
+              class="icon-btn clear-btn"
+              aria-label="Clear search"
+              (click)="clearSearch(searchInput)"
+            >
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                <path d="M18 6 6 18 M6 6l12 12" />
+              </svg>
+            </button>
+          } @else {
+            <kbd class="kbd" aria-hidden="true">/</kbd>
+          }
+        </div>
+
+        <div class="controls">
+          <div class="filters" role="group" aria-label="Filter by discipline">
+            @for (chip of chips(); track chip.value) {
+              <button
+                type="button"
+                class="filter"
+                [attr.aria-pressed]="group() === chip.value"
+                (click)="setGroup(chip.value)"
+              >
+                {{ chip.label }}
+                <span class="filter-count">{{ chip.count }}</span>
+              </button>
+            }
+          </div>
+
+          <div class="view-controls">
+            <label class="sort">
+              <span class="sort-label">Sort</span>
+              <select aria-label="Sort categories" (change)="onSort($event)">
+                <option value="default" [selected]="sort() === 'default'">Default order</option>
+                <option value="az" [selected]="sort() === 'az'">A to Z</option>
+              </select>
+            </label>
+
+            <div class="view-toggle" role="group" aria-label="Layout">
+              <button
+                type="button"
+                class="toggle-btn"
+                aria-label="Grid view"
+                [attr.aria-pressed]="view() === 'grid'"
+                (click)="setView('grid')"
+              >
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                  <path d="M3 3h7v7H3z M14 3h7v7h-7z M14 14h7v7h-7z M3 14h7v7H3z" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                class="toggle-btn"
+                aria-label="List view"
+                [attr.aria-pressed]="view() === 'list'"
+                (click)="setView('list')"
+              >
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                  <path d="M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="result-count" aria-live="polite">
+        {{ visibleCategories().length }}
+        {{ visibleCategories().length === 1 ? 'category' : 'categories' }}
+        @if (hasFilters()) {
+          <button type="button" class="link-btn" (click)="resetFilters(searchInput)">
+            Reset filters
+          </button>
+        }
+      </p>
+
+      @if (visibleCategories().length === 0) {
+        <div class="card empty">
+          <h3>No matching categories</h3>
+          <p class="muted">Try a different keyword or discipline, or reset the filters.</p>
+          <button type="button" class="btn btn-primary" (click)="resetFilters(searchInput)">
+            Reset filters
+          </button>
+        </div>
+      } @else {
+        <ul class="cards" [class.list]="view() === 'list'">
+          @for (category of visibleCategories(); track category.id) {
+            <li>
+              <a
+                class="card category"
+                [href]="hrefFor(category)"
+                [attr.aria-label]="'Open ' + category.title"
+                (click)="select($event, category)"
+              >
+                <span class="cat-top">
+                  <span class="icon-box">
+                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                      <path [attr.d]="category.icon" />
+                    </svg>
+                  </span>
+                  <span class="num">{{ category.number }}</span>
+                </span>
+
+                <span class="cat-body">
+                  <span class="cat-group badge badge-outline" [class.hit]="isMatch(category.group)">
+                    {{ category.group }}
+                  </span>
+                  <span class="cat-title">
+                    @for (part of highlight(category.title); track $index) {<span [class.mark]="part.match">{{ part.text }}</span>}
+                  </span>
+                  <span class="cat-desc">
+                    @for (part of highlight(category.description); track $index) {<span [class.mark]="part.match">{{ part.text }}</span>}
+                  </span>
+                  <span class="tags">
+                    @for (tag of category.tags; track tag) {
+                      <span class="badge badge-soft chip" [class.match]="isMatch(tag)">{{ tag }}</span>
+                    }
+                  </span>
+                </span>
+
+                <span class="cat-foot">
+                  @if (countFor(category) !== null) {
+                    <span class="badge badge-soft">
+                      {{ countFor(category) }} {{ countFor(category) === 1 ? 'project' : 'projects' }}
+                    </span>
+                  }
+                  <span class="cta-link" >
+                    View projects
+                    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                      <path d="M5 12h14 M13 6l6 6-6 6" />
+                    </svg>
+                  </span>
+                </span>
+              </a>
+            </li>
+          }
+        </ul>
+      }
+    </section>
+
+    <!-- ============ Call to action ============ -->
+    <section class="inner block" aria-labelledby="cta-title">
+      <div class="card cta">
+        <div class="cta-text">
+          <h2 id="cta-title">Have a project in mind?</h2>
+          <p>
+            Let's turn your idea into a clear, professional, and effective digital experience.
+          </p>
+        </div>
+        @if (contactHref()) {
+          <a class="btn btn-primary" [href]="contactHref()">Let's Talk</a>
+        } @else {
+          <button type="button" class="btn btn-primary" (click)="talk.emit()">Let's Talk</button>
+        }
+      </div>
+    </section>
+  </main>
+
+  @if (showTop()) {
+    <button type="button" class="to-top" aria-label="Back to top" (click)="scrollToTop()">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <path d="m18 15-6-6-6 6" />
+      </svg>
+    </button>
+  }
+</div>

@@ -32,7 +32,7 @@
   gap: var(--spacing-24);
   max-width: var(--page-max-width);
   margin: 0 auto;
-  padding: 0 var(--spacing-16) 0px;
+  padding: 0 var(--spacing-16) 0;
 }
 
 .content {
@@ -398,6 +398,18 @@
   text-decoration: underline;
 }
 
+.group-icon {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-interactive);
+  background: var(--color-paper);
+  border: 1px solid var(--color-hairline);
+  color: var(--color-ink);
+}
+
 .empty {
   display: grid;
   gap: var(--spacing-4);
@@ -674,6 +686,40 @@
 }
 
 /* ==========================================================================
+   Professional strength
+   ========================================================================== */
+.strength {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  gap: var(--spacing-12);
+}
+
+.strength-tile {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-12);
+  min-width: 0;
+}
+
+.strength-label {
+  font-size: var(--text-subheading);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.plus {
+  display: none;
+  color: var(--color-mid-gray);
+  font-size: var(--text-heading-sm);
+  font-weight: 400;
+}
+.card-skills{
+    border: none;
+    box-shadow: none;
+    padding: 0;
+}
+/* ==========================================================================
    Responsive (mobile first)
    ========================================================================== */
 @media (min-width: 576px) {
@@ -712,6 +758,15 @@
   .service {
     padding: var(--spacing-24);
   }
+    .strength {
+    grid-template-columns: repeat(7, auto);
+    justify-content: space-between;
+    /* padding: var(---24); */
+  }
+
+  .plus {
+    display: block;
+  }
 }
 
 @media (min-width: 992px) {
@@ -747,11 +802,14 @@
 
   .block,
   .service {
-    scroll-margin-top: var(--spacing-lg-80);
+    scroll-margin-top: var(var(--spacing-lg-80));
   }
 
   .card {
     padding: var(--spacing-24);
+  }
+  .card-skills{ 
+    padding: 0;
   }
 
   .service-title h2 {
@@ -825,7 +883,6 @@
   font-size: var(--text-body-lg);
   line-height: 1.56;
   color: var(--color-mid-gray);
-  font-weight: 300;
 }
 
 .strong {
@@ -946,7 +1003,7 @@
 .chain {
   display: grid;
   gap: var(--spacing-24);
-  max-width: 640px;
+  /* max-width: 640px; */
   padding: 0;
   list-style: none;
 }
@@ -984,7 +1041,7 @@
 .result-card {
   display: grid;
   gap: var(--spacing-8);
-  max-width: 640px;
+  /* max-width: 640px; */
 }
 
 .result-card .sub-title {

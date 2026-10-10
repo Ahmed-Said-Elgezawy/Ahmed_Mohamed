@@ -7,7 +7,7 @@
    ========================================================================== */
 :root,:host {
   /* Colors */
-  --color-canvas: #f5f5f5;
+  --color-canvas: #f5f5f5; 
   --color-paper: #ffffff;
   --color-surface-alt: #fafafa;
   --color-ink: #0a0a0a;
