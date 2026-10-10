@@ -166,6 +166,12 @@ a {
   color: var(--color-mid-gray);
 }
 
+@media (max-width:500px) {
+  .breadcrumb{
+    gap: 4px;
+  }
+}
+
 .breadcrumb .current {
   color: var(--color-ink);
 }
