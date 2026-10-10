@@ -1,0 +1,231 @@
+<!-- Reading progress -->
+<div
+  class="progress"
+  role="progressbar"
+  aria-label="Reading progress"
+  aria-valuemin="0"
+  aria-valuemax="100"
+  [attr.aria-valuenow]="progressRounded()"
+>
+  <span class="progress__bar" [style.transform]="'scaleX(' + progress() / 100 + ')'"></span>
+</div>
+
+<main class="page">
+  <!-- HERO -->
+  <header class="hero" id="top" data-section aria-labelledby="hero-title">
+    <div class="hero__main">
+      <p class="caption">Business Development Specialist &amp; Front-End Developer</p>
+      <h1 class="display" id="hero-title">
+        <span class="display__lead">Hello, I'm</span>
+        Ahmed Elgizawy
+      </h1>
+      <p class="lead">
+        I combine
+        <strong>Business Development, Social Media Marketing, Graphic Design, and Front-End Development</strong>
+        to help businesses build stronger brands, connect with their audiences, and create better digital
+        experiences.
+      </p>
+      <p class="muted">
+        I don't just focus on one part of a project — I understand the journey from
+        <strong>business needs to marketing, design, and digital implementation.</strong>
+      </p>
+      <div class="actions">
+        <a class="btn btn--primary" href="#featured-work" (click)="scrollToSection('featured-work', $event)">
+          View My Work
+        </a>
+        <a class="btn btn--outline" [routerLink]="routes.contact">Let's Work Together</a>
+      </div>
+    </div>
+
+    <aside class="journey" aria-label="From business needs to digital implementation">
+      <p class="caption">The journey</p>
+      <ol class="journey__list">
+        @for (item of journey; track item; let i = $index) {
+          <li class="journey__item">
+            <span class="step__num" aria-hidden="true">{{ i + 1 }}</span>
+            <span class="journey__label">{{ item }}</span>
+          </li>
+        }
+      </ol>
+    </aside>
+  </header>
+
+
+
+  <!-- INTRODUCTION -->
+  <section class="card reveal" id="introduction" data-section aria-labelledby="intro-title">
+    <p class="caption">Introduction</p>
+    <h2 class="heading" id="intro-title">More Than One Skill. One Complete Perspective.</h2>
+    <div class="prose">
+      <p>My experience combines business, marketing, design, and technology.</p>
+      <p>
+        From communicating with clients and understanding their needs, to creating marketing content,
+        designing visual materials, and developing modern websites — I bring different skills together to
+        create practical and meaningful results.
+      </p>
+    </div>
+    <div class="actions">
+      <a class="btn btn--primary" [routerLink]="routes.about">Learn More About Me</a>
+    </div>
+  </section>
+
+  <!-- WHAT I DO -->
+  <section class="card reveal" id="what-i-do" data-section aria-labelledby="what-title">
+    <p class="caption">What I Do</p>
+    <h2 class="heading" id="what-title">What I Can Do For You</h2>
+    <div class="grid grid--2">
+      @for (offer of offers; track offer.title) {
+        <article class="nested">
+          <h3 class="nested__title">{{ offer.title }}</h3>
+          <p class="nested__text">{{ offer.text }}</p>
+          <a class="link" [routerLink]="routes.services" [fragment]="offer.fragment">
+            {{ offer.linkLabel }} <span aria-hidden="true">→</span>
+          </a>
+        </article>
+      }
+    </div>
+  </section>
+
+  <!-- MY APPROACH -->
+  <section class="card reveal" id="approach" data-section aria-labelledby="approach-title">
+    <p class="caption">My Approach</p>
+    <h2 class="heading" id="approach-title">From Ideas to Real Results</h2>
+    <p class="prose-line">I believe successful work starts with understanding the goal behind the project.</p>
+    <ol class="grid grid--3">
+      @for (step of approachSteps; track step.title; let i = $index) {
+        <li class="nested">
+          <span class="step__num" aria-hidden="true">0{{ i + 1 }}</span>
+          <h3 class="nested__title">{{ step.title }}</h3>
+          <p class="nested__text">{{ step.text }}</p>
+        </li>
+      }
+    </ol>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="card reveal" id="experience" data-section aria-labelledby="exp-title">
+    <p class="caption">Experience</p>
+    <h2 class="heading" id="exp-title">Experience That Connects Business &amp; Technology</h2>
+    <div class="split">
+      <div class="block">
+        <h3 class="block__title">Accurad Teleradiology Solutions</h3>
+        <p class="role">Business Development &amp; Social Media Specialist &amp; Graphic Designer</p>
+        <p class="muted">Cairo, Egypt · Sep 2025 – Sep 2026</p>
+        <p class="prose-line">
+          My role allowed me to work across both <strong>business and digital environments</strong>, giving me a
+          broader understanding of how different parts of a company work together.
+        </p>
+      </div>
+      <div class="block">
+        <h3 class="block__title">Worked across multiple areas including:</h3>
+        <ul class="checklist">
+          @for (area of experienceAreas; track area) {
+            <li>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
+              <span>{{ area }}</span>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+    <div class="actions">
+      <a class="btn btn--outline" [routerLink]="routes.experience">View My Experience <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  <!-- FEATURED WORK -->
+  <section class="card reveal" id="featured-work" data-section aria-labelledby="work-title">
+    <p class="caption">Featured Work</p>
+    <h2 class="heading" id="work-title">Selected Projects</h2>
+    <p class="prose-line">
+      A selection of projects that represent my experience across development, design, marketing, and digital
+      solutions.
+    </p>
+    <div class="grid grid--3">
+      @for (project of projects; track project.title) {
+        <article class="nested project">
+          <h3 class="nested__title">{{ project.title }}</h3>
+          <p class="nested__text">{{ project.text }}</p>
+          <ul class="tags" [attr.aria-label]="project.title + ' technologies'">
+            @for (tag of project.tags; track tag) {
+              <li class="badge badge--outline">{{ tag }}</li>
+            }
+          </ul>
+          <a class="link" [routerLink]="routes.projects">
+            {{ project.linkLabel }} <span aria-hidden="true">→</span>
+          </a>
+        </article>
+      }
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="card reveal" id="skills" data-section aria-labelledby="skills-title">
+    <p class="caption">Skills</p>
+    <h2 class="heading" id="skills-title">Skills &amp; Technologies</h2>
+    <div class="grid grid--2">
+      @for (group of skillGroups; track group.title) {
+        <section class="nested" [attr.aria-label]="group.title">
+          <h3 class="nested__title">{{ group.title }}</h3>
+          <ul class="tags">
+            @for (item of group.items; track item) {
+              <li class="badge badge--soft">{{ item }}</li>
+            }
+          </ul>
+        </section>
+      }
+    </div>
+  </section>
+
+  <!-- WHY WORK WITH ME -->
+  <section class="card card--inverse reveal" id="why-work-with-me" data-section aria-labelledby="why-title">
+    <p class="caption">Why Work With Me</p>
+    <h2 class="heading" id="why-title">One Perspective. Multiple Skills.</h2>
+    <div class="prose">
+      <p>
+        Working across business, marketing, design, and development allows me to understand projects from
+        different perspectives.
+      </p>
+      <p>
+        I can understand the <strong>business goal</strong>, think about the <strong>audience</strong>, create the
+        <strong>visual direction</strong>, and turn the idea into a <strong>functional digital experience</strong>.
+      </p>
+      <p>
+        This combination helps me communicate better, solve problems more effectively, and approach projects
+        from a complete perspective.
+      </p>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="card card--cta reveal" id="contact" data-section aria-labelledby="cta-title">
+    <p class="caption">Final Call</p>
+    <h2 class="heading" id="cta-title">Have an Idea in Mind?</h2>
+    <p class="lead">
+      Whether you need a modern website, professional visual content, social media support, or help developing
+      a business opportunity, I'd be happy to discuss your project.
+    </p>
+    <p class="cta__line">Let's Build Something Meaningful Together.</p>
+    <div class="actions">
+      <a class="btn btn--primary" [routerLink]="routes.contact">Start a Conversation <span aria-hidden="true">→</span></a>
+      <a class="btn btn--outline" [routerLink]="routes.services">View My Services <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+</main>
+
+<!-- Back to top -->
+<button
+  type="button"
+  class="to-top"
+  [class.is-visible]="showBackToTop()"
+  [attr.tabindex]="showBackToTop() ? 0 : -1"
+  [attr.aria-hidden]="showBackToTop() ? null : 'true'"
+  aria-label="Back to top"
+  (click)="scrollToTop()"
+>
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="m18 15-6-6-6 6" />
+  </svg>
+</button>

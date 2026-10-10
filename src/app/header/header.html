@@ -1,0 +1,100 @@
+<header class="header" [class.scrolled]="scrolled()" [class.open]="menuOpen()">
+  <div class="bar">
+    <a
+      class="brand"
+      [href]="homePath()"
+      [attr.aria-label]="fullName + ', home'"
+      (click)="navigate($event, homePath())"
+    >
+      <span class="mark" aria-hidden="true">{{ initials }}</span>
+      <span class="brand-text">
+        <span class="brand-name">{{ fullName }}</span>
+        <span class="brand-role">Business. Marketing. Design. Technology.</span>
+      </span>
+    </a>
+
+    <nav class="nav" aria-label="Main navigation">
+      <ul>
+        @for (link of links(); track link.path) {
+          <li>
+            <a
+              class="nav-link"
+              [href]="link.path"
+              [class.active]="isActive(link)"
+              [attr.aria-current]="isActive(link) ? 'page' : null"
+              (click)="navigate($event, link.path)"
+            >
+              {{ link.label }}
+            </a>
+          </li>
+        }
+      </ul>
+    </nav>
+
+    <div class="actions">
+      @if (ctaHref()) {
+        <a class="btn btn-primary cta-desktop" [href]="ctaHref()">{{ ctaLabel() }}</a>
+      } @else {
+        <button type="button" class="btn btn-primary cta-desktop" routerLink="/Contact" (click)="onCta()">
+          {{ ctaLabel() }}
+        </button>
+      }
+
+      <button
+        type="button"
+        class="menu-btn"
+        [attr.aria-expanded]="menuOpen()"
+        aria-controls="mobile-menu"
+        [attr.aria-label]="menuOpen() ? 'Close menu' : 'Open menu'"
+        (click)="toggleMenu()"
+      >
+        @if (menuOpen()) {
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+            <path d="M18 6 6 18 M6 6l12 12" />
+          </svg>
+        } @else {
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+            <path d="M4 6h16 M4 12h16 M4 18h16" />
+          </svg>
+        }
+      </button>
+    </div>
+  </div>
+
+  @if (menuOpen()) {
+    <div id="mobile-menu" class="mobile">
+      <nav aria-label="Mobile navigation">
+        <ul>
+          @for (link of links(); track link.path) {
+            <li>
+              <a
+                class="mobile-link"
+                [href]="link.path"
+                [class.active]="isActive(link)"
+                [attr.aria-current]="isActive(link) ? 'page' : null"
+                (click)="navigate($event, link.path)"
+              >
+                {{ link.label }}
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                  <path d="m9 18 6-6-6-6" />
+                </svg>
+              </a>
+            </li>
+          }
+        </ul>
+      </nav>
+
+      @if (ctaHref()) {
+        <a class="btn btn-primary btn-block" [href]="ctaHref()">{{ ctaLabel() }}</a>
+      } @else {
+        <button type="button" class="btn btn-primary btn-block" routerLink="/Contact" (click)="onCta()">
+          {{ ctaLabel() }}
+        </button>
+      }
+    </div>
+  }
+</header>
+
+<section>
+  
+</section>

@@ -1,0 +1,97 @@
+<footer class="footer">
+  <div class="wrap">
+    @if (showCta()) {
+      <section class="cta" aria-labelledby="footer-cta-title">
+        <div class="cta-text">
+          <h2 id="footer-cta-title">{{ ctaTitle }}</h2>
+          <p>{{ ctaText }}</p>
+        </div>
+        <div class="cta-actions">
+          @if (talkHref()) {
+            <a class="btn btn-primary" [href]="talkHref()">Let's Talk</a>
+          } @else {
+            <button type="button" class="btn btn-primary" (click)="talk.emit()">Let's Talk</button>
+          }
+          @if (projectHref()) {
+            <a class="btn btn-outline" [href]="projectHref()">Start a Project</a>
+          } @else {
+            <button type="button" class="btn btn-outline" (click)="startProject.emit()">
+              Start a Project
+            </button>
+          }
+        </div>
+      </section>
+    }
+
+    <div class="main">
+      <div class="brand-block">
+        <a
+          class="brand"
+          [href]="homePath()"
+          [attr.aria-label]="fullName + ', home'"
+          (click)="navigate($event, homePath())"
+        >
+          <span class="mark" aria-hidden="true">{{ initials }}</span>
+          <span class="brand-name">{{ fullName }}</span>
+        </a>
+        <p class="blurb">{{ blurb }}</p>
+      </div>
+
+      <nav class="links" aria-label="Footer navigation">
+        <div class="col">
+          <h2 class="col-title">Pages</h2>
+          <ul>
+            @for (link of pages(); track link.path) {
+              <li>
+                <a [href]="link.path" (click)="navigate($event, link.path)">{{ link.label }}</a>
+              </li>
+            }
+          </ul>
+        </div>
+
+        <div class="col">
+          <h2 class="col-title">Services</h2>
+          <ul>
+            @for (link of services(); track link.path) {
+              <li>
+                <a [href]="link.path" (click)="navigate($event, link.path)">{{ link.label }}</a>
+              </li>
+            }
+          </ul>
+        </div>
+
+        @if (socials().length || contactHref()) {
+          <div class="col">
+            <h2 class="col-title">Connect</h2>
+            <ul>
+              @if (contactHref()) {
+                <li><a [href]="contactHref()">Get in touch</a></li>
+              }
+              @for (social of socials(); track social.href) {
+                <li>
+                  <a [href]="social.href" target="_blank" rel="noopener noreferrer">
+                    {{ social.label }}
+                    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+                      <path d="M7 17 17 7 M8 7h9v9" />
+                    </svg>
+                  </a>
+                </li>
+              }
+            </ul>
+          </div>
+        }
+      </nav>
+    </div>
+
+    <div class="bottom">
+      <p class="copy">© {{ year }} {{ fullName }}. All rights reserved.</p>
+      <p class="tagline">{{ tagline }}</p>
+      <button type="button" class="top-btn" (click)="scrollToTop()">
+        Back to top
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+          <path d="m18 15-6-6-6 6" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,179 @@
+<a class="skip-link" href="#who" (click)="goTo('who', $event)">Skip to content</a>
+
+<div class="progress" aria-hidden="true">
+  <span [style.width.%]="progress()"></span>
+</div>
+
+<div class="page">
+  <header class="topbar">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <span>Profile</span>
+      <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+        <path d="m9 18 6-6-6-6" />
+      </svg>
+      <span class="current" aria-current="page">About me</span>
+    </nav>
+
+    <button type="button" class="btn btn-secondary print-btn" (click)="print()">
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+        <path d="M6 9V2h12v7 M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2 M6 14h12v8H6z" />
+      </svg>
+      Print or save as PDF
+    </button>
+  </header>
+
+  <div class="layout">
+    <aside class="side">
+      <nav aria-label="Page sections">
+        @for (section of sections; track section.id) {
+          <a
+            class="side-link"
+            [href]="'#' + section.id"
+            [class.active]="active() === section.id"
+            [attr.aria-current]="active() === section.id ? 'true' : null"
+            (click)="goTo(section.id, $event)"
+          >
+            {{ section.label }}
+          </a>
+        }
+      </nav>
+    </aside>
+
+    <main class="content">
+      <!-- ============ Hero ============ -->
+      <header class="hero" aria-labelledby="hero-title">
+        <span class="badge badge-solid">About</span>
+        <h1 id="hero-title">About Me</h1>
+        <p class="lead">
+          A multidisciplinary professional combining business, creativity, and technology.
+        </p>
+      </header>
+
+      <!-- ============ Who I Am ============ -->
+      <section id="who" class="block" aria-labelledby="who-title">
+        <div class="card prose">
+          <h2 id="who-title">Who I Am</h2>
+          @for (paragraph of who; track $index) {
+            <p>{{ paragraph }}</p>
+          }
+        </div>
+      </section>
+
+      <!-- ============ What I Do ============ -->
+      <section id="what" class="block" aria-labelledby="what-title">
+        <div class="card prose">
+        <div class="block-head">
+          <h2 id="what-title">What I Do</h2>
+          <p class="muted">{{ whatIntro }}</p>
+        </div>
+
+        <div class="areas-grid">
+          @for (area of areas; track area.id) {
+            <article class="card area-card">
+              <header class="area-head">
+                <span class="icon-box">
+                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                    <path [attr.d]="area.icon" />
+                  </svg>
+                </span>
+                <h3>{{ area.title }}</h3>
+              </header>
+              <p>{{ area.text }}</p>
+              @if (area.tags.length) {
+                <ul class="tags" [attr.aria-label]="area.title + ' technologies'">
+                  @for (tag of area.tags; track tag) {
+                    <li class="badge badge-outline">{{ tag }}</li>
+                  }
+                </ul>
+              }
+            </article>
+          }
+        </div>
+      </div>
+      </section>
+
+      <!-- ============ My Approach ============ -->
+      <section id="approach" class="block" aria-labelledby="approach-title">
+        <div class="card prose">
+          <h2 id="approach-title">My Approach</h2>
+          <p class="lead">{{ approachLead }}</p>
+          @for (paragraph of approach; track $index) {
+            <p>{{ paragraph }}</p>
+          }
+          <ul class="tags" aria-label="What I connect">
+            @for (item of approachConnects; track item) {
+              <li class="badge badge-soft">{{ item }}</li>
+            }
+          </ul>
+        </div>
+      </section>
+
+      <!-- ============ What I Bring ============ -->
+      <section id="bring" class="block" aria-labelledby="bring-title">
+        <div class="card prose">
+          <h2 id="bring-title">What I Bring</h2>
+          @for (paragraph of bring; track $index) {
+            <p>{{ paragraph }}</p>
+          }
+          <ul class="tags" aria-label="Strengths">
+            @for (item of bringTags; track item) {
+              <li class="badge badge-outline">{{ item }}</li>
+            }
+          </ul>
+        </div>
+      </section>
+
+      <!-- ============ Beyond the Job Title ============ -->
+      <section id="beyond" class="block" aria-labelledby="beyond-title">
+        <div class="card prose">
+          <h2 id="beyond-title">Beyond the Job Title</h2>
+          @for (paragraph of beyond; track $index) {
+            <p>{{ paragraph }}</p>
+          }
+        </div>
+
+        <div class="card strength">
+          @for (tile of strength; track tile.label; let last = $last) {
+            <div class="strength-tile">
+              <span class="icon-box">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                  <path [attr.d]="tile.icon" />
+                </svg>
+              </span>
+              <span class="strength-label">{{ tile.label }}</span>
+            </div>
+            @if (!last) {
+              <span class="plus" aria-hidden="true">+</span>
+            }
+          }
+        </div>
+        <p class="closing">{{ beyondClosing }}</p>
+      </section>
+
+      <!-- ============ Let's Build ============ -->
+      <section id="build" class="block" aria-labelledby="build-title">
+        <div class="card cta">
+          <h2 id="build-title">{{ buildTitle }}</h2>
+          <p>{{ buildText }}</p>
+          <div class="cta-actions">
+            @if (contactHref()) {
+              <a class="btn btn-primary" [href]="contactHref()">Get in touch</a>
+            }
+            @if (experienceHref()) {
+              <a class="btn btn-outline" [href]="experienceHref()">View my experience</a>
+            }
+            <button type="button" class="btn btn-outline" (click)="scrollToTop()">Back to top</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  @if (showTop()) {
+    <button type="button" class="to-top" aria-label="Back to top" (click)="scrollToTop()">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <path d="m18 15-6-6-6 6" />
+      </svg>
+    </button>
+  }
+</div>

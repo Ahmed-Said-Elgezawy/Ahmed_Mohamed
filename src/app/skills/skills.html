@@ -1,0 +1,337 @@
+<a class="skip-link" href="#overview" (click)="goTo('overview', $event)">Skip to content</a>
+
+<div class="progress" aria-hidden="true">
+  <span [style.width.%]="progress()"></span>
+</div>
+
+<div class="page">
+  <header class="topbar">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <span>Profile</span>
+      <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+        <path d="m9 18 6-6-6-6" />
+      </svg>
+      <span class="current" aria-current="page">Skills</span>
+    </nav>
+
+    <button type="button" class="btn btn-secondary print-btn" (click)="print()">
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+        <path d="M6 9V2h12v7 M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2 M6 14h12v8H6z" />
+      </svg>
+      Print or save as PDF
+    </button>
+  </header>
+
+  <div class="layout">
+    <aside class="side">
+      <nav aria-label="Page sections">
+        @for (section of sections; track section.id) {
+          <a
+            class="side-link"
+            [href]="'#' + section.id"
+            [class.active]="active() === section.id"
+            [attr.aria-current]="active() === section.id ? 'true' : null"
+            (click)="goTo(section.id, $event)"
+          >
+            {{ section.label }}
+          </a>
+        }
+      </nav>
+    </aside>
+
+    <main class="content">
+      <!-- ============ Hero ============ -->
+      <header class="hero" aria-labelledby="hero-title">
+        <span class="badge badge-solid">Skills</span>
+        <h1 id="hero-title">Skills</h1>
+        <p class="tagline">{{ headline }}</p>
+      </header>
+
+      <ul class="stats" aria-label="At a glance">
+        @for (stat of stats; track stat.label) {
+          <li class="stat">
+            <span class="stat-label">{{ stat.label }}</span>
+            <span class="stat-value">{{ stat.value }}</span>
+            <span class="stat-note">{{ stat.note }}</span>
+          </li>
+        }
+      </ul>
+
+      <!-- ============ Overview + search ============ -->
+      <section id="overview" class="block" aria-labelledby="overview-title">
+        <div class="card prose">
+          <h2 id="overview-title">Skills That Connect Business, Creativity &amp; Technology</h2>
+          @for (paragraph of overview; track $index) {
+            <p>
+              @for (part of paragraph; track $index) {<span [class.strong]="part.strong">{{ part.text }}</span>}
+            </p>
+          }
+        </div>
+
+        <div class="toolbar" role="search">
+          <div class="search">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+              <path d="m21 21-4.3-4.3 M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z" />
+            </svg>
+            <input
+              #searchInput
+              type="search"
+              placeholder="Search every skill and tool, e.g. Angular, CRM, typography"
+              aria-label="Search skills"
+              autocomplete="off"
+              (input)="onSearch($event)"
+            />
+            @if (query()) {
+              <button
+                type="button"
+                class="icon-btn clear-btn"
+                aria-label="Clear search"
+                (click)="clearSearch(searchInput)"
+              >
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                  <path d="M18 6 6 18 M6 6l12 12" />
+                </svg>
+              </button>
+            }
+          </div>
+        </div>
+
+        @if (query()) {
+          <div class="card results" aria-live="polite">
+            <p class="result-count">
+              {{ matchCount() }} matching {{ matchCount() === 1 ? 'skill' : 'skills' }}
+            </p>
+
+            @if (matchGroups().length === 0) {
+              <div class="empty">
+                <h3>No matching skills</h3>
+                <p class="muted">Try a shorter or different keyword, or clear the search.</p>
+              </div>
+            } @else {
+              @for (group of matchGroups(); track group.title) {
+                <div class="group">
+                  <a class="group-link" [href]="'#' + group.id" (click)="goTo(group.id, $event)">
+                    {{ group.title }}
+                  </a>
+                  <ul class="tags">
+                    @for (item of group.items; track item) {
+                      <li class="badge badge-solid">{{ item }}</li>
+                    }
+                  </ul>
+                </div>
+              }
+            }
+          </div>
+        }
+      </section>
+
+      <!-- ============ Core skills ============ -->
+      <section id="core" class="block" aria-labelledby="core-title">
+        <div class="block-head">
+          <h2 id="core-title">Core Skills</h2>
+          <p class="muted">
+            @if (query()) {
+              Showing every area while you search.
+            } @else {
+              Filter by area to focus on one set of skills.
+            }
+          </p>
+        </div>
+
+        <div class="filters" role="group" aria-label="Filter skills by area">
+          <button
+            type="button"
+            class="filter"
+            [attr.aria-pressed]="!query() && categoryFilter() === 'all'"
+            (click)="setCategoryFilter('all')"
+          >
+            All
+          </button>
+          @for (category of categories; track category.id) {
+            <button
+              type="button"
+              class="filter"
+              [attr.aria-pressed]="!query() && categoryFilter() === category.id"
+              (click)="setCategoryFilter(category.id)"
+            >
+              {{ category.title }}
+            </button>
+          }
+        </div>
+
+        @for (category of visibleCategories(); track category.id) {
+          <article
+            [id]="category.id"
+            class="card service"
+            [attr.aria-labelledby]="category.id + '-title'"
+          >
+            <header class="service-head">
+              <span class="icon-box">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                  <path [attr.d]="category.icon" />
+                </svg>
+              </span>
+              <span class="num">{{ category.number }}</span>
+            </header>
+
+            <div class="service-title">
+              <h3 [id]="category.id + '-title'">{{ category.title }}</h3>
+            </div>
+
+            <div class="service-intro">
+              @for (paragraph of category.intro; track $index) {
+                <p>{{ paragraph }}</p>
+              }
+            </div>
+
+            @if (category.skills.length) {
+              <div class="sub">
+                <h4 class="sub-title">{{ category.skillsTitle }}</h4>
+                <ul class="tags">
+                  @for (skill of category.skills; track skill) {
+                    <li class="badge badge-soft chip" [class.match]="isMatch(skill)">{{ skill }}</li>
+                  }
+                </ul>
+              </div>
+            }
+
+            @if (category.technologies.length) {
+              <div class="sub">
+                <h4 class="sub-title">{{ category.techTitle }}</h4>
+                <ul class="principles tech">
+                  @for (tech of category.technologies; track tech.name) {
+                    <li [class.match]="isMatch(tech.name)">
+                      <h5>{{ tech.name }}</h5>
+                      <p>{{ tech.text }}</p>
+                    </li>
+                  }
+                </ul>
+              </div>
+            }
+
+            @if (category.flow; as flow) {
+              <div class="sub">
+                <h4 class="sub-title">{{ flow.title }}</h4>
+                <ol class="flow" [attr.aria-label]="flow.title">
+                  @for (step of flow.steps; track step) {
+                    <li><span class="badge badge-outline">{{ step }}</span></li>
+                  }
+                </ol>
+              </div>
+            }
+          </article>
+        }
+      </section>
+
+      <!-- ============ Toolkit ============ -->
+      <section id="toolkit" class="block" aria-labelledby="toolkit-title">
+        <div class="block-head">
+          <h2 id="toolkit-title">My Toolkit</h2>
+          <p class="muted">Technologies &amp; Tools</p>
+        </div>
+
+        <div class="toolkit">
+          @for (group of toolkit; track group.id) {
+            <article class="card toolkit-card">
+              <h3 class="sub-title">{{ group.title }}</h3>
+              <ul class="tags">
+                @for (item of group.items; track item) {
+                  <li class="badge badge-soft chip" [class.match]="isMatch(item)">{{ item }}</li>
+                }
+              </ul>
+            </article>
+          }
+        </div>
+      </section>
+
+      <!-- ============ How my skills work together ============ -->
+      <section id="together" class="block" aria-labelledby="together-title">
+        <div class="block-head">
+          <h2 id="together-title">How My Skills Work Together</h2>
+          <p class="muted">One Skill Supports Another</p>
+        </div>
+        <p class="together-lead">{{ togetherLead }}</p>
+
+        <ol class="chain">
+          @for (step of together; track step.title) {
+            <li class="card chain-step">
+              <span class="num">{{ pad($index + 1) }}</span>
+              <h3>{{ step.title }}</h3>
+              <p>
+                @for (part of step.parts; track $index) {<span [class.strong]="part.strong">{{ part.text }}</span>}
+              </p>
+            </li>
+          }
+        </ol>
+
+        <div class="card result-card">
+          <h3 class="sub-title">Result</h3>
+          <p class="result-label">{{ togetherResult }}</p>
+        </div>
+      </section>
+
+      <!-- ============ Journey ============ -->
+      <section id="journey" class="block" aria-labelledby="journey-title">
+        <div class="card prose">
+          <h2 id="journey-title">My Development Journey</h2>
+          <p class="lead">Always Learning. Always Improving.</p>
+          @for (paragraph of journey; track $index) {
+            <p>
+              @for (part of paragraph; track $index) {<span [class.strong]="part.strong">{{ part.text }}</span>}
+            </p>
+          }
+        </div>
+      </section>
+
+      <!-- ============ Call to action ============ -->
+      <section id="contact" class="block" aria-labelledby="contact-title">
+        <div class="card cta">
+          <h2 id="contact-title">Let's Turn Skills Into Results</h2>
+          @for (paragraph of ctaText; track $index) {
+            <p>{{ paragraph }}</p>
+          }
+          <div class="cta-actions">
+            @if (talkHref()) {
+              <a class="btn btn-primary" [href]="talkHref()">
+                Let's Work Together
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                  <path d="M5 12h14 M13 6l6 6-6 6" />
+                </svg>
+              </a>
+            } @else {
+              <button type="button" class="btn btn-primary" (click)="talk.emit()">
+                Let's Work Together
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                  <path d="M5 12h14 M13 6l6 6-6 6" />
+                </svg>
+              </button>
+            }
+            @if (projectsHref()) {
+              <a class="btn btn-outline" [href]="projectsHref()">
+                View My Projects
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                  <path d="M5 12h14 M13 6l6 6-6 6" />
+                </svg>
+              </a>
+            } @else {
+              <button type="button" class="btn btn-outline" (click)="viewProjects.emit()">
+                View My Projects
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                  <path d="M5 12h14 M13 6l6 6-6 6" />
+                </svg>
+              </button>
+            }
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  @if (showTop()) {
+    <button type="button" class="to-top" aria-label="Back to top" (click)="scrollToTop()">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <path d="m18 15-6-6-6 6" />
+      </svg>
+    </button>
+  }
+</div>

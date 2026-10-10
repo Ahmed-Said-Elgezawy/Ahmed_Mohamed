@@ -1,0 +1,346 @@
+<a class="skip-link" href="#overview" (click)="goTo('overview', $event)">Skip to content</a>
+
+<div class="progress" aria-hidden="true">
+  <span [style.width.%]="progress()"></span>
+</div>
+
+<div class="page">
+  <header class="topbar">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <span>Profile</span>
+      <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+        <path d="m9 18 6-6-6-6" />
+      </svg>
+      <span class="current" aria-current="page">Services</span>
+    </nav>
+
+    <button type="button" class="btn btn-secondary print-btn" (click)="print()">
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+        <path d="M6 9V2h12v7 M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2 M6 14h12v8H6z" />
+      </svg>
+      Print or save as PDF
+    </button>
+  </header>
+
+  <div class="layout">
+    <aside class="side">
+      <nav aria-label="Page sections">
+        @for (section of sections; track section.id) {
+          <a
+            class="side-link"
+            [href]="'#' + section.id"
+            [class.active]="active() === section.id"
+            [attr.aria-current]="active() === section.id ? 'true' : null"
+            (click)="goTo(section.id, $event)"
+          >
+            {{ section.label }}
+          </a>
+        }
+      </nav>
+    </aside>
+ 
+    <main class="content">
+      <!-- ============ Hero ============ -->
+      <header class="hero" aria-labelledby="hero-title">
+        <span class="badge badge-solid">Services</span>
+        <h1 id="hero-title">Services</h1>
+        <p class="lead">
+          Business, marketing, design, and development solutions tailored to your needs.
+        </p>
+      </header>
+ 
+      <!-- ============ Overview ============ -->
+      <section id="overview" class="block" aria-labelledby="overview-title">
+        <div class="card prose">
+          <h2 id="overview-title">What I Do</h2>
+          @for (paragraph of overview; track $index) {
+            <p>{{ paragraph }}</p>
+          }
+        </div>
+
+        <ul class="overview-grid" aria-label="All services">
+          @for (service of services; track service.id) {
+            <li>
+              <a
+                class="overview-card"
+                [href]="'#' + service.id"
+                (click)="goTo(service.id, $event)"
+              >
+                <span class="overview-top">
+                  <span class="icon-box">
+                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                      <path [attr.d]="service.icon" />
+                    </svg>
+                  </span>
+                  <span class="num">{{ service.number }}</span>
+                </span>
+                <span class="overview-title">{{ service.title }}</span>
+                <span class="overview-headline">{{ service.headline }}</span>
+              </a>
+            </li>
+          }
+        </ul>
+
+        <div class="toolbar" role="search">
+          <div class="search">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+              <path d="m21 21-4.3-4.3 M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z" />
+            </svg>
+            <input
+              #searchInput
+              type="search"
+              placeholder="Search what I can help with, e.g. landing page, CRM, campaigns"
+              aria-label="Search services"
+              autocomplete="off"
+              (input)="onSearch($event)"
+            />
+            @if (query()) {
+              <button
+                type="button"
+                class="icon-btn clear-btn"
+                aria-label="Clear search"
+                (click)="clearSearch(searchInput)"
+              >
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                  <path d="M18 6 6 18 M6 6l12 12" />
+                </svg>
+              </button>
+            }
+          </div>
+        </div>
+
+        @if (query()) {
+          <div class="card results" aria-live="polite">
+            <p class="result-count">
+              {{ matchCount() }} matching {{ matchCount() === 1 ? 'service' : 'services' }}
+            </p>
+
+            @if (matchGroups().length === 0) {
+              <div class="empty">
+                <h3>No matching services</h3>
+                <p class="muted">Try a shorter or different keyword, or clear the search.</p>
+              </div>
+            } @else {
+              @for (group of matchGroups(); track group.id) {
+                <div class="group">
+                  <a class="group-link" [href]="'#' + group.id" (click)="goTo(group.id, $event)">
+                    <span class="num">{{ group.number }}</span>
+                    {{ group.title }}
+                  </a>
+                  <ul class="tags">
+                    @for (item of group.items; track item) {
+                      <li class="badge badge-solid">{{ item }}</li>
+                    }
+                  </ul>
+                </div>
+              }
+            }
+          </div>
+        }
+      </section>
+
+      <!-- ============ Services ============ -->
+      @for (service of services; track service.id) {
+        <section
+          [id]="service.id"
+          class="card service"
+          [attr.aria-labelledby]="service.id + '-title'"
+        >
+          <header class="service-head">
+            <span class="icon-box">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <path [attr.d]="service.icon" />
+              </svg>
+            </span>
+            <span class="num">{{ service.number }}</span>
+          </header>
+
+          <div class="service-title">
+            <h2 [id]="service.id + '-title'">{{ service.title }}</h2>
+            <p class="headline">{{ service.headline }}</p>
+          </div>
+
+          <div class="service-intro">
+            @for (paragraph of service.intro; track $index) {
+              <p>{{ paragraph }}</p>
+            }
+          </div>
+
+          @if (service.help.length) {
+            <div class="sub">
+              <h3 class="sub-title">What I Can Help With</h3>
+              <ul class="tags">
+                @for (item of service.help; track item) {
+                  <li class="badge badge-soft chip" [class.match]="isMatch(item)">{{ item }}</li>
+                }
+              </ul>
+            </div>
+          }
+
+          @if (service.technologies; as technologies) {
+            <div class="sub">
+              <h3 class="sub-title">Technologies</h3>
+              <ul class="tags tech">
+                @for (tech of technologies; track tech) {
+                  <li class="badge badge-solid">{{ tech }}</li>
+                }
+              </ul>
+            </div>
+          }
+
+          @if (service.principles; as principles) {
+            <div class="sub">
+              <h3 class="sub-title">Design Principles</h3>
+              @for (line of principles.lead; track $index) {
+                <p class="sub-lead">{{ line }}</p>
+              }
+              <ul class="principles">
+                @for (item of principles.items; track item.title) {
+                  <li>
+                    <h4>{{ item.title }}</h4>
+                    <p>{{ item.text }}</p>
+                  </li>
+                }
+              </ul>
+            </div>
+          }
+
+          @if (service.process; as process) {
+            <div class="sub">
+              <h3 class="sub-title">{{ process.title }}</h3>
+              <ol class="steps">
+                @for (step of process.steps; track step.title) {
+                  <li>
+                    <span class="step-num">{{ pad($index + 1) }}</span>
+                    <div>
+                      <h4>{{ step.title }}</h4>
+                      <p>{{ step.text }}</p>
+                    </div>
+                  </li>
+                }
+              </ol>
+            </div>
+          }
+
+          @if (service.bestFor; as bestFor) {
+            <div class="sub">
+              <h3 class="sub-title">Best For</h3>
+              <ul class="tags">
+                @for (item of bestFor; track item) {
+                  <li class="badge badge-outline">{{ item }}</li>
+                }
+              </ul>
+            </div>
+          }
+
+          @if (service.flow; as flow) {
+            <div class="sub">
+              <h3 class="sub-title">{{ flow.title }}</h3>
+              @for (line of flow.lead; track $index) {
+                <p class="sub-lead">{{ line }}</p>
+              }
+              <ol class="flow" [attr.aria-label]="flow.title">
+                @for (step of flow.steps; track step) {
+                  <li><span class="badge badge-outline">{{ step }}</span></li>
+                }
+              </ol>
+            </div>
+          }
+
+          @if (service.pillars; as pillars) {
+            <div class="sub">
+              <h3 class="sub-title">The Four Pillars</h3>
+              <ul class="principles">
+                @for (pillar of pillars; track pillar.title) {
+                  <li>
+                    <h4>{{ pillar.title }}</h4>
+                    <p>{{ pillar.text }}</p>
+                  </li>
+                }
+              </ul>
+            </div>
+          }
+
+          @if (service.result; as result) {
+            <div class="sub">
+              <h3 class="sub-title">The Result</h3>
+              <p class="result-label">{{ result.label }}</p>
+              <p class="sub-lead">{{ result.text }}</p>
+            </div>
+          }
+        </section>
+      }
+
+      <!-- ============ Why work with me ============ -->
+      <section id="why-me" class="block" aria-labelledby="why-title">
+        <div class="card prose">
+          <h2 id="why-title">{{ why.title }}</h2>
+          <p class="lead">{{ why.headline }}</p>
+          @for (paragraph of why.paragraphs; track $index) {
+            <p>{{ paragraph }}</p>
+          }
+          <h3 class="sub-title">{{ why.bringTitle }}</h3>
+          <ul class="checklist">
+            @for (item of why.bring; track item) {
+              <li>
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+                <span>{{ item }}</span>
+              </li>
+            }
+          </ul>
+        </div>
+      </section>
+
+      <!-- ============ How I work ============ -->
+      <section id="how-i-work" class="block" aria-labelledby="how-title">
+        <div class="block-head">
+          <h2 id="how-title">{{ how.title }}</h2>
+          <p class="muted">{{ how.headline }}</p>
+        </div>
+        <ol class="how">
+          @for (step of how.steps; track step.title) {
+            <li class="card">
+              <span class="how-num">{{ pad($index + 1) }}</span>
+              <h3>{{ step.title }}</h3>
+              <p>{{ step.text }}</p>
+            </li>
+          }
+        </ol>
+      </section>
+
+      <!-- ============ Call to action ============ -->
+      <section id="contact" class="block" aria-labelledby="contact-title">
+        <div class="card cta">
+          <h2 id="contact-title">{{ cta.title }}</h2>
+          @for (paragraph of cta.paragraphs; track $index) {
+            <p>{{ paragraph }}</p>
+          }
+          <div class="cta-actions">
+            @if (talkHref()) {
+              <a class="btn btn-primary" [href]="talkHref()">Let's Talk</a>
+            } @else {
+              <button type="button" class="btn btn-primary" (click)="talk.emit()">Let's Talk</button>
+            }
+            @if (projectHref()) {
+              <a class="btn btn-outline" [href]="projectHref()">Start a Project</a>
+            } @else {
+              <button type="button" class="btn btn-outline" (click)="startProject.emit()">
+                Start a Project
+              </button>
+            }
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  @if (showTop()) {
+    <button type="button" class="to-top" aria-label="Back to top" (click)="scrollToTop()">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <path d="m18 15-6-6-6 6" />
+      </svg>
+    </button>
+  }
+</div>

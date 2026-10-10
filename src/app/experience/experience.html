@@ -1,0 +1,239 @@
+<a class="skip-link" href="#experience" (click)="goTo('experience', $event)">Skip to experience</a>
+
+<div class="progress" aria-hidden="true">
+  <span [style.width.%]="progress()"></span>
+</div>
+
+<div class="page"> 
+  <header class="topbar">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <span>Profile</span>
+      <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+        <path d="m9 18 6-6-6-6" />
+      </svg>
+      <span class="current" aria-current="page">Experience</span>
+    </nav>
+
+    <button type="button" class="btn btn-secondary" (click)="print()">
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+        <path d="M6 9V2h12v7 M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2 M6 14h12v8H6z" />
+      </svg>
+      Print or save as PDF
+    </button>
+  </header>
+
+  <div class="layout">
+    <aside class="side">
+      <nav aria-label="Page sections">
+        @for (section of sections; track section.id) {
+          <a
+            class="side-link"
+            [href]="'#' + section.id"
+            [class.active]="active() === section.id"
+            [attr.aria-current]="active() === section.id ? 'true' : null"
+            (click)="goTo(section.id, $event)"
+          >
+            {{ section.label }}
+          </a>
+        }
+      </nav>
+    </aside>
+
+    <main class="content">
+      <!-- ============ Overview ============ -->
+      <section id="summary" class="hero" aria-labelledby="hero-title">
+        <span class="badge badge-solid">Experience</span>
+        <h1 id="hero-title">Professional experience</h1>
+        <p class="lead">
+          Connected business needs with marketing, design, and digital experiences.
+        </p>
+ 
+        <div class="stats">
+          @for (stat of stats; track stat.label) {
+            <div class="stat">
+              <span class="stat-label">{{ stat.label }}</span>
+              <span class="stat-value">{{ stat.value }}</span>
+              <span class="stat-note">{{ stat.note }}</span>
+            </div>
+          }
+        </div>
+      </section>
+
+      <!-- ============ Experience ============ -->
+      <section id="experience" class="block" aria-labelledby="exp-title">
+        <div class="block-head">
+          <h2 id="exp-title">Experience</h2>
+          <p class="muted">Search responsibilities, or open each area to read the details.</p>
+        </div>
+
+        <div class="toolbar" role="search">
+          <div class="search">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+              <path d="m21 21-4.3-4.3 M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z" />
+            </svg>
+            <input
+              #searchInput
+              type="search"
+              placeholder="Search responsibilities, e.g. CRM, Angular, campaigns"
+              aria-label="Search responsibilities"
+              autocomplete="off"
+              (input)="onSearch($event)"
+            />
+            @if (query()) {
+              <button
+                type="button"
+                class="icon-btn"
+                aria-label="Clear search"
+                (click)="clearSearch(searchInput)"
+              >
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                  <path d="M18 6 6 18 M6 6l12 12" />
+                </svg>
+              </button>
+            }
+          </div>
+
+          <div class="toolbar-actions">
+            <button type="button" class="btn btn-outline" (click)="expandAll()">Expand all</button>
+            <button type="button" class="btn btn-outline" (click)="collapseAll()">Collapse all</button>
+          </div>
+        </div>
+
+        <p class="result-count" aria-live="polite">
+          @if (query()) {
+            {{ visibleCount() }} matching {{ visibleCount() === 1 ? 'responsibility' : 'responsibilities' }}
+          } @else {
+            {{ visibleCount() }} responsibilities across {{ filteredRoles().length }} roles
+          }
+        </p>
+
+        @if (filteredRoles().length === 0) {
+          <div class="card empty">
+            <h3>No matching responsibilities</h3>
+            <p class="muted">Try a shorter or different keyword, or clear the search to see everything.</p>
+            <button type="button" class="btn btn-primary" (click)="clearSearch(searchInput)">
+              Clear search
+            </button>
+          </div>
+        } @else {
+          <ol class="timeline">
+            @for (role of filteredRoles(); track role.id) {
+              <li>
+                <article class="card role">
+                  <header class="role-head">
+                    <div class="role-title">
+                      <h3>{{ role.title }}</h3>
+                      <p class="company">{{ role.company }}, {{ role.location }}</p>
+                    </div>
+                    <div class="role-meta">
+                      <span class="badge badge-outline">{{ role.period }}</span>
+                      <span class="badge badge-soft">{{ duration(role) }}</span>
+                    </div>
+                  </header>
+
+                  <p class="role-summary">{{ role.summary }}</p>
+
+                  <div class="groups">
+                    @for (group of role.groups; track group.id) {
+                      <div class="group">
+                        <h4 class="group-heading">
+                          <button
+                            type="button"
+                            class="group-head"
+                            [attr.aria-expanded]="isOpen(group.id)"
+                            [attr.aria-controls]="'panel-' + group.id"
+                            (click)="toggle(group.id)"
+                          >
+                            <span class="group-icon">
+                              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                                <path [attr.d]="group.icon" />
+                              </svg>
+                            </span>
+                            <span class="group-name">{{ group.title }}</span>
+                            <span class="badge badge-soft">{{ group.items.length }}</span>
+                            <svg class="chev" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                              <path d="m6 9 6 6 6-6" />
+                            </svg>
+                          </button>
+                        </h4>
+
+                        @if (isOpen(group.id)) {
+                          <ul class="items" [id]="'panel-' + group.id">
+                            @for (item of group.items; track item) {
+                              <li>{{ item }}</li>
+                            }
+                          </ul>
+                        }
+                      </div>
+                    }
+                  </div>
+                </article>
+              </li>
+            }
+          </ol>
+        }
+      </section>
+
+      <!-- ============ Core experience ============ -->
+      <section id="skills" class="block" aria-labelledby="skills-title">
+        <div class="block-head">
+          <h2 id="skills-title">Core experience</h2>
+          <p class="muted">Four areas that come together in every project.</p>
+        </div>
+
+        <div class="skills-grid">
+          @for (category of skillCategories; track category.id) {
+            <article class="card skill-card">
+              <header class="skill-head">
+                <span class="group-icon">
+                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                    <path [attr.d]="category.icon" />
+                  </svg>
+                </span>
+                <h3>{{ category.title }}</h3>
+              </header>
+              <ul class="tags">
+                @for (skill of category.skills; track skill) {
+                  <li class="badge badge-soft">{{ skill }}</li>
+                }
+              </ul>
+            </article>
+          }
+        </div>
+      </section>
+
+      <!-- ============ Professional strength ============ -->
+      <section id="strength" class="block" aria-labelledby="strength-title">
+        <div class="block-head">
+          <h2 id="strength-title">Professional strength</h2>
+          <p class="muted">Business + Marketing + Design + Technology</p>
+        </div>
+
+        <div class="card strength">
+          @for (tile of strength; track tile.label; let last = $last) {
+            <div class="strength-tile">
+              <span class="group-icon">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                  <path [attr.d]="tile.icon" />
+                </svg>
+              </span>
+              <span class="strength-label">{{ tile.label }}</span>
+            </div>
+            @if (!last) {
+              <span class="plus" aria-hidden="true">+</span>
+            }
+          }
+        </div>
+      </section>
+    </main>
+  </div>
+
+  @if (showTop()) {
+    <button type="button" class="to-top" aria-label="Back to top" (click)="scrollToTop()">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <path d="m18 15-6-6-6 6" />
+      </svg>
+    </button>
+  }
+</div>
+
