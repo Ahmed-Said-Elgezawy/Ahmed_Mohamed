@@ -81,7 +81,7 @@
 }
 
 .side-link.active {
-  background: var(--color-ink);
+  background: var(--color-ink-dark);
   color: var(--color-surface-alt);
 }
 
@@ -107,12 +107,12 @@
 }
 
 .btn-primary {
-  background: var(--color-ink);
+  background: var(--color-ink-dark);
   color: var(--color-surface-alt);
 }
 
 .btn-primary:hover {
-  background: var(--color-ink-soft);
+  background: var(--color-ink);
 }
 
 .btn-secondary {
@@ -147,7 +147,7 @@
 }
 
 .badge-solid {
-  background: var(--color-ink-soft);
+  background: var(--color-ink-dark);
   color: var(--color-surface-alt);
 }
 
@@ -676,13 +676,13 @@
   height: 44px;
   border: 0;
   border-radius: var(--radius-interactive);
-  background: var(--color-ink);
+  background: var(--color-ink-dark);
   color: var(--color-surface-alt);
   cursor: pointer;
 }
 
 .to-top:hover {
-  background: var(--color-ink-soft);
+  background: var(--color-ink);
 }
 
 /* ==========================================================================
@@ -951,8 +951,8 @@
 }
 
 .filter[aria-pressed='true'] {
-  border-color: var(--color-ink);
-  background: var(--color-ink);
+  border-color: var(--color-ink-dark);
+  background: var(--color-ink-dark);
   color: var(--color-surface-alt);
 }
 

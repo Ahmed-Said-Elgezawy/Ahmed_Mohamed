@@ -7,10 +7,13 @@
    ========================================================================== */
 :root,:host {
   /* Colors */
-  --color-canvas: #f5f5f5; 
+  /* --color-canvas: #f5f5f5;  */
+  --color-canvas: #ededed; 
   --color-paper: #ffffff;
   --color-surface-alt: #fafafa;
   --color-ink: #0a0a0a;
+  /* --color-ink: #006ead; */
+  --color-ink-dark: #171717;
   --color-ink-soft: #171717;
   --color-mid-gray: #737373;
   --color-hairline: #e5e5e5;
@@ -130,6 +133,7 @@ a {
   z-index: 60;
   height: 3px;
   background: transparent;
+  display: none;
 }
 
 .progress span {
@@ -137,7 +141,68 @@ a {
   height: 100%;
   background: var(--color-ink);
 }
+@media (max-width: 820px) {
+  .progress {
+    display: block;
+  }
+  .scroll-meter {
+    display: none;
+  }
+}
+@media (min-width: 821px) {
+  .progress {
+    display: none;
+  }
+  .scroll-meter {
+    display: block;
+  }
+}
 /* ===== */
 body{
   margin: 0;
+}
+
+/* إخفاء شريط التمرير مع بقاء التمرير يعمل */
+html {
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* Edge القديم */
+}
+
+html::-webkit-scrollbar {
+  display: none;                /* Chrome / Safari / Edge */
+}
+
+
+@media print {
+  :host {
+    background: #ffffff;
+  }
+
+  .skip-link,
+  .progress,
+  .print-btn,
+  .side,
+  .toolbar,
+  .results,
+  .overview-grid,
+  .to-top,
+  .cta-actions {
+    display: none !important;
+  }
+
+  .layout {
+    display: block;
+    padding: 0;
+  }
+
+  .card,
+  .steps li,
+  .principles li {
+    box-shadow: none;
+    break-inside: avoid;
+  }
+
+  .content {
+    gap: 24px;
+  }
 }

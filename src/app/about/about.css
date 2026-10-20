@@ -1,3 +1,69 @@
+/* ---------- Scroll percentage indicator ---------- */
+.scroll-meter {
+  position: fixed;
+  top: 72px;
+  bottom: 72px;
+  right: max(4px, env(safe-area-inset-right));
+  width: 48px;
+  z-index: 54;
+  pointer-events: none;
+}
+
+.scroll-meter__track,
+.scroll-meter__fill {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+  border-radius: var(--radius-interactive);
+}
+
+.scroll-meter__track {
+  bottom: 0;
+  background: var(--color-hairline);
+}
+
+.scroll-meter__fill {
+  background: var(--color-ink);
+}
+
+.scroll-meter__thumb {
+  position: absolute;
+  left: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  padding: 3px 8px;
+  border-radius: var(--radius-interactive);
+  background: var(--color-ink-dark);
+  color: var(--color-surface-alt);
+  box-shadow: var(--shadow-card);
+  transform: translate(-50%, -50%);
+  will-change: top;
+}
+
+.scroll-meter__value {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.33;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+@media (max-width: 560px) {
+  .scroll-meter {
+    width: 40px;
+    right: 2px;
+  }
+  .scroll-meter__thumb {
+    min-width: 38px;
+    padding: 2px 6px;
+  }
+  .scroll-meter__value {
+    font-size: 11px;
+  }
+}
 /* ==========================================================================
    Page + layout
    ========================================================================== */
@@ -81,7 +147,7 @@
 }
 
 .side-link.active {
-  background: var(--color-ink);
+  background: var(--color-ink-dark);
   color: var(--color-surface-alt);
 }
 
@@ -107,12 +173,12 @@
 }
 
 .btn-primary {
-  background: var(--color-ink);
+  background: var(--color-ink-dark);
   color: var(--color-surface-alt);
 }
 
 .btn-primary:hover {
-  background: var(--color-ink-soft);
+  background: var(--color-ink);
 }
 
 .btn-secondary {
@@ -144,12 +210,12 @@
     font-size: var(--text-caption);
     font-weight: 500;
     line-height: 1.33;
-    background: var(--color-ink-soft);
+    background: var(--color-ink-dark);
     color: var(--color-surface-alt);
 }
 
 .badge-soft {
-    background: var(--color-ink-soft);
+    background: var(--color-ink-dark);
     color: var(--color-surface-alt);
 }
 
@@ -361,13 +427,13 @@
   height: 44px;
   border: 0;
   border-radius: var(--radius-interactive);
-  background: var(--color-ink);
+  background: var(--color-ink-dark);
   color: var(--color-surface-alt);
   cursor: pointer;
 }
 
 .to-top:hover {
-  background: var(--color-ink-soft);
+  background: var(--color-ink);
 }
 
 /* ==========================================================================

@@ -50,7 +50,7 @@ export const routes: Routes = [
        component:Contact 
     },
     {
-       path: 'Projects',
+       path: 'Projects', 
        component:Projects 
     },
     {

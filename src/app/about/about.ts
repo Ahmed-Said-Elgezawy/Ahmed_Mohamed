@@ -4,6 +4,7 @@ import {
   DestroyRef,
   ElementRef,
   afterNextRender,
+  computed,
   inject,
   input,
   signal,
@@ -228,6 +229,7 @@ export class About {
   readonly strength = STRENGTH;
   readonly buildTitle = BUILD_TITLE;
   readonly buildText = BUILD_TEXT;
+    protected readonly progressRounded = computed(() => Math.round(this.progress()));
  
   /* ---- ui state ---- */
   readonly active = signal('who');

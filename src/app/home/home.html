@@ -1,16 +1,30 @@
-<!-- Reading progress -->
+
+<!--
+  Scroll percentage indicator that also works like a scrollbar:
+  drag the percentage badge, click the line to jump, or use the keyboard (arrows, PageUp/PageDown, Home/End).
+-->
 <div
-  class="progress"
-  role="progressbar"
-  aria-label="Reading progress"
+  class="scroll-meter"
+  [class.is-dragging]="dragging()"
+  role="scrollbar"
+  aria-label="Page scroll position"
+  aria-orientation="vertical"
+  aria-controls="page-content"
   aria-valuemin="0"
   aria-valuemax="100"
   [attr.aria-valuenow]="progressRounded()"
+  tabindex="0"
+  (pointerdown)="onMeterPointerDown($event)"
+  (keydown)="onMeterKeydown($event)"
 >
-  <span class="progress__bar" [style.transform]="'scaleX(' + progress() / 100 + ')'"></span>
+  <span class="scroll-meter__track"></span>
+  <span class="scroll-meter__fill" [style.height.%]="progress()"></span>
+  <span class="scroll-meter__thumb" [style.top.%]="progress()">
+    <span class="scroll-meter__value">{{ progressRounded() }}%</span>
+  </span>
 </div>
 
-<main class="page">
+<main class="page" id="page-content">
   <!-- HERO -->
   <header class="hero" id="top" data-section aria-labelledby="hero-title">
     <div class="hero__main">
@@ -33,7 +47,7 @@
         <a class="btn btn--primary" href="#featured-work" (click)="scrollToSection('featured-work', $event)">
           View My Work
         </a>
-        <a class="btn btn--outline" [routerLink]="routes.contact">Let's Work Together</a>
+        <a class="btn btn--outline" routerLink="/Contact">Let's Work Together</a>
       </div>
     </div>
 
@@ -65,7 +79,7 @@
       </p>
     </div>
     <div class="actions">
-      <a class="btn btn--primary" [routerLink]="routes.about">Learn More About Me</a>
+      <a class="btn btn--primary" routerLink="/About">Learn More About Me</a>
     </div>
   </section>
 
@@ -78,7 +92,7 @@
         <article class="nested">
           <h3 class="nested__title">{{ offer.title }}</h3>
           <p class="nested__text">{{ offer.text }}</p>
-          <a class="link" [routerLink]="routes.services" [fragment]="offer.fragment">
+          <a class="link" routerLink="/Services" [fragment]="offer.fragment">
             {{ offer.linkLabel }} <span aria-hidden="true">→</span>
           </a>
         </article>
@@ -131,7 +145,7 @@
       </div>
     </div>
     <div class="actions">
-      <a class="btn btn--outline" [routerLink]="routes.experience">View My Experience <span aria-hidden="true">→</span></a>
+      <a class="btn btn--outline" routerLink="/Experience">View My Experience <span aria-hidden="true">→</span></a>
     </div>
   </section>
 
@@ -153,7 +167,7 @@
               <li class="badge badge--outline">{{ tag }}</li>
             }
           </ul>
-          <a class="link" [routerLink]="routes.projects">
+          <a class="link" routerLink="routes.projects">
             {{ project.linkLabel }} <span aria-hidden="true">→</span>
           </a>
         </article>
@@ -209,8 +223,8 @@
     </p>
     <p class="cta__line">Let's Build Something Meaningful Together.</p>
     <div class="actions">
-      <a class="btn btn--primary" [routerLink]="routes.contact">Start a Conversation <span aria-hidden="true">→</span></a>
-      <a class="btn btn--outline" [routerLink]="routes.services">View My Services <span aria-hidden="true">→</span></a>
+      <a class="btn btn--primary" routerLink="/Contact">Start a Conversation <span aria-hidden="true">→</span></a>
+      <a class="btn btn--outline" routerLink="/Services">View My Services <span aria-hidden="true">→</span></a>
     </div>
   </section>
 </main>

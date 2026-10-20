@@ -3,7 +3,31 @@
 
 <app-header />
 <router-outlet />
+
+<div class="progress" aria-hidden="true">
+  <span [style.width.%]="progress()"></span>
+</div>
+
+<div
+  class="scroll-meter"
+  [class.is-dragging]="dragging()"
+  role="scrollbar"
+  aria-label="Page scroll position"
+  aria-orientation="vertical"
+  aria-controls="page-content"
+  aria-valuemin="0"
+  aria-valuemax="100"
+  [attr.aria-valuenow]="progressRounded()"
+  tabindex="0"
+  (pointerdown)="onMeterPointerDown($event)"
+  (keydown)="onMeterKeydown($event)"
+>
+  <span class="scroll-meter__track"></span>
+  <span class="scroll-meter__fill" [style.height.%]="progress()"></span>
+  <span class="scroll-meter__thumb" [style.top.%]="progress()">
+    <span class="scroll-meter__value">{{ progressRounded() }}%</span>
+  </span>
+</div>
+
 <app-footer />
 
-// ng build --configuration production --base-href "https://Ahmed-Said-Elgezawy.github.io/Ahmed_Mohamed/"
-// npx angular-cli-ghpages --dir=dist/app/browser

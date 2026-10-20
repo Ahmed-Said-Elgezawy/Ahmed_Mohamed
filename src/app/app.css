@@ -1,0 +1,97 @@
+/* ---------- Scroll percentage indicator (draggable, works like a scrollbar) ---------- */
+.scroll-meter {
+  position: fixed;
+  top: 72px;
+  bottom: 72px;
+  right: max(4px, env(safe-area-inset-right));
+  width: 48px;
+  z-index: 54;
+  /* The strip itself lets clicks pass through; only the line and the badge are interactive. */
+  pointer-events: none;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  outline: none;
+}
+
+.scroll-meter__track,
+.scroll-meter__fill {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+  border-radius: var(--radius-interactive);
+}
+
+.scroll-meter__track {
+  bottom: 0;
+  background: var(--color-hairline);
+  pointer-events: auto;
+  cursor: pointer;
+  touch-action: none;
+}
+
+/* Wider invisible hit area so the thin line is easy to click or tap. */
+.scroll-meter__track::before {
+  content: '';
+  position: absolute;
+  inset: 0 -12px;
+}
+
+.scroll-meter__fill {
+  background: var(--color-ink);
+}
+
+.scroll-meter__thumb {
+  position: absolute;
+  left: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  padding: 3px 8px;
+  border-radius: var(--radius-interactive);
+  background: var(--color-ink-dark);
+  color: var(--color-surface-alt);
+  box-shadow: var(--shadow-card);
+  transform: translate(-50%, -50%);
+  will-change: top;
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+  transition: background-color 0.15s ease;
+}
+
+/* Larger invisible hit area around the badge. */
+.scroll-meter__thumb::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+}
+
+.scroll-meter__thumb:hover {
+  background: var(--color-ink);
+}
+
+.scroll-meter.is-dragging .scroll-meter__thumb {
+  background: var(--color-ink);
+  cursor: grabbing;
+}
+
+.scroll-meter:focus-visible .scroll-meter__thumb {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 3px;
+}
+
+.scroll-meter__value {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.33;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+
+/* // ng build --configuration production --base-href "https://Ahmed-Said-Elgezawy.github.io/Ahmed_Mohamed/"
+// npx angular-cli-ghpages --dir=dist/app/browser */

@@ -1,7 +1,12 @@
-<a class="skip-link" href="#who" (click)="goTo('who', $event)">Skip to content</a>
 
-<div class="progress" aria-hidden="true">
-  <span [style.width.%]="progress()"></span>
+
+<!-- Scroll percentage indicator: moves down the side of the page as you scroll (0% at the top, 100% at the end) -->
+<div class="scroll-meter" aria-hidden="true">
+  <span class="scroll-meter__track"></span>
+  <span class="scroll-meter__fill" [style.height.%]="progress()"></span>
+  <span class="scroll-meter__thumb" [style.top.%]="progress()">
+    <span class="scroll-meter__value">{{ progressRounded() }}%</span>
+  </span>
 </div>
 
 <div class="page">

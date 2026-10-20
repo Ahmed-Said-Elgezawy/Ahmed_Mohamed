@@ -8,14 +8,14 @@
         </div>
         <div class="cta-actions">
           @if (talkHref()) {
-            <a class="btn btn-primary" [href]="talkHref()">Let's Talk</a>
+            <a class="btn btn-primary" [href]="talkHref()" routeLink="/Contact">Let's Talk</a>
           } @else {
-            <button type="button" class="btn btn-primary" (click)="talk.emit()">Let's Talk</button>
+            <button type="button" class="btn btn-primary" (click)="talk.emit()" routeLink="/Contact">Let's Talk</button>
           }
           @if (projectHref()) {
-            <a class="btn btn-outline" [href]="projectHref()">Start a Project</a>
+            <a class="btn btn-outline" [href]="projectHref()" routeLink="/Contact" >Start a Project</a>
           } @else {
-            <button type="button" class="btn btn-outline" (click)="startProject.emit()">
+            <button type="button" class="btn btn-outline" routeLink="/Contact" (click)="startProject.emit()">
               Start a Project
             </button>
           }

@@ -83,7 +83,7 @@
 }
 
 .side-link.active {
-  background: var(--color-ink);
+  background: var(--color-ink-dark);
   color: var(--color-surface-alt);
 }
 
@@ -109,12 +109,12 @@
 }
 
 .btn-primary {
-  background: var(--color-ink);
+  background: var(--color-ink-dark);
   color: var(--color-surface-alt);
 }
 
 .btn-primary:hover {
-  background: var(--color-ink-soft);
+  background: var(--color-ink);
 }
 
 .btn-secondary {
@@ -149,13 +149,13 @@
 }
 
 .badge-solid {
-  background: var(--color-ink-soft);
+  background: var(--color-ink-dark);
   color: var(--color-surface-alt);
 }
 
 .badge-soft {
   background: var(--color-canvas);
-  color: var(--color-ink-soft);
+  color: var(--color-ink-dark);
 }
 
 .badge-outline {
@@ -503,7 +503,7 @@
   flex: none;
   padding: 2px 8px;
   border-radius: var(--radius-interactive);
-  background: var(--color-ink-soft);
+  background: var(--color-ink-dark);
   color: var(--color-surface-alt);
   font-size: var(--text-caption);
   font-weight: 500;
@@ -673,13 +673,13 @@
   height: 44px;
   border: 0;
   border-radius: var(--radius-interactive);
-  background: var(--color-ink);
+  background: var(--color-ink-dark);
   color: var(--color-surface-alt);
   cursor: pointer;
 }
 
 .to-top:hover {
-  background: var(--color-ink-soft);
+  background: var(--color-ink);
 }
 
 /* ==========================================================================
@@ -788,36 +788,3 @@
   }
 }
 
-@media print {
-  :host {
-    background: #ffffff;
-  }
-
-  .skip-link,
-  .progress,
-  .print-btn,
-  .side,
-  .toolbar,
-  .results,
-  .overview-grid,
-  .to-top,
-  .cta-actions {
-    display: none !important;
-  }
-
-  .layout {
-    display: block;
-    padding: 0;
-  }
-
-  .card,
-  .steps li,
-  .principles li {
-    box-shadow: none;
-    break-inside: avoid;
-  }
-
-  .content {
-    gap: 24px;
-  }
-}
